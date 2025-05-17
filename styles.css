@@ -20,19 +20,20 @@ body {
     flex-direction: column;
     width: 30em;
     border-width: 5px;
+    border-radius: 10px;
     margin: 100px 0px;
     padding: 10px;
     border-style: solid;
     border-color: black;
-    background-color: #3e454d;
+    background-color: #2e343a;
 }
 
 .screen-container {
     font-size: 60px;
     text-align: end;
-    border-style: solid;
     border-width: 2px;
-    background-color: rgb(210, 231, 215);
+    border-radius: 10px;
+    background-color: rgb(229, 233, 230);
     margin-bottom: 10px;
     padding: 10px;
 
@@ -58,7 +59,7 @@ button {
     height: 6rem;
     border-radius: 10px;
     border-style:hidden;
-    box-shadow: 0 5px #ccc;
+    box-shadow: 0px 5px #ccc;
     transition: all 0.1s ease-in-out;
     cursor: pointer;
 
@@ -70,7 +71,7 @@ button:active {
   }
 
 .operator {
-    background-color: hsl(37, 98%, 53%);
+    background-color: hsl(37, 100%, 72%);
     box-shadow: 0 5px hsl(37, 98%, 30%);
 
 }
@@ -80,9 +81,9 @@ button:active {
 }
 
 .function {
-    background-color: hsl(19, 69%, 50%);
-    box-shadow: 0 5px hsl(19, 69%, 30%);
+    background-color: hsl(214, 93%, 84%);
+    box-shadow: 0 5px hsl(214, 93%, 70%);
 }
 #zero {
-    width: 14rem;
+    width: 13.7rem;
 }
