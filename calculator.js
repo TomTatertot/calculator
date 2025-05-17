@@ -1,4 +1,5 @@
-const DISPLAY_MAX_SIZE = 11;
+const DISPLAY_MAX_SIZE = 13;
+const HISTORY_MAX_SIZE = 15;
 
 let firstOperand = null;
 let secondOperand = null;
@@ -10,6 +11,7 @@ const clearButton = document.querySelector("#clear");
 const backButton = document.querySelector("#backspace");
 const signButton = document.querySelector("#sign");
 const display = document.querySelector(".display");
+const history = document.querySelector(".history");
 const dotButton = document.querySelector("#dot");
 const digitButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
@@ -58,8 +60,6 @@ function operate(a, b, operator) {
             errorMessage = "Unknown Operator" 
             return "error";
     }
-    
-    return result;
 }
 
 function processDigitInput(event){
@@ -68,36 +68,50 @@ function processDigitInput(event){
 
     let input = event.target.textContent;
 
-    if (getDisplay() == 0 && input == 0)
-        return; 
 
-    if (getDisplay() == 0 && input != 0)
+    if (getDisplay() == 0 && !getDisplay().includes("."))
     {
+        // if (firstOperand)
+        // {
+
+        // }
         setDisplay(input);
         return;
-    }
+    }    
+    // if (getDisplay() == 0 && input == 0 && !getDisplay().includes("."))
+    //     return; 
 
-    if (firstOperator && secondOperand == null)
-    {
-        setDisplay(input);
-        secondOperand = 0;
-        return;
-    }
+    // if (getDisplay() == 0 && input != 0 && !firstOperator && !getDisplay().includes)
+    // {
+    //     setDisplay(input);
+    //     return;
+    // }
+
+    // if (firstOperator && !secondOperand)
+    // {
+    //     setDisplay(input);
+    //     return;
+    // }
     concatDisplay(input);
 }
 
 function processOperatorInput(event){
+
     if (hasError)
         resetCalculator();
     
     let operatorInput = event.target.textContent;
-    if (operatorInput === "=" && secondOperand === null)
+    if (operatorInput === "=" && firstOperator === null)
+    {
         return;
+    }
 
     if (firstOperator === null)
     {
         firstOperand = getDisplay();
         firstOperator = operatorInput;
+        setHistory(firstOperand + " " + firstOperator);
+        setDisplay(0);
         return;
     }
 
@@ -108,14 +122,20 @@ function processOperatorInput(event){
         setDisplay(errorMessage);
         return;
     }
-    setDisplay(result);
-    firstOperand = getDisplay();
-    secondOperand = null;
 
     if (operatorInput === "=")
+    {
+        setHistory(`${getHistory()} ${secondOperand} = `)
+        setDisplay(result);
+        firstOperand = getDisplay();
         firstOperator = null;
-    else 
+        secondOperand = null;
+    }
+    else
+    {
+        setHistory(`${result} ${operatorInput}`)
         firstOperator = operatorInput;
+    } 
 }
 
 function handleKeyPress(event){
@@ -160,6 +180,7 @@ function reverseSign(){
 
 function resetCalculator() {
     setDisplay(0);
+    setHistory(0);
     firstOperand = null;
     secondOperand = null;
     firstOperator = null;
@@ -191,4 +212,17 @@ function setDisplay(value) {
 
 function getDisplay(){
     return display.textContent;
+}
+
+function setHistory(value){
+    let valueStr = String(value);
+    if (hasError)
+    {
+        history.textContent = valueStr;
+        return;
+    }
+    history.textContent = valueStr.slice(0,HISTORY_MAX_SIZE);
+}
+function getHistory(){
+    return history.textContent;
 }
