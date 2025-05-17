@@ -15,11 +15,12 @@ const digitButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 
 clearButton.addEventListener("click", resetCalculator);
-dotButton.addEventListener("click", addDot)
+backButton.addEventListener("click", handleBackspace);
+signButton.addEventListener("click", reverseSign);
+dotButton.addEventListener("click", addDecimal);
 digitButtons.forEach(button => button.addEventListener("click", processDigitInput));
 operatorButtons.forEach(button => button.addEventListener("click", processOperatorInput));
 document.addEventListener("keydown", handleKeyPress);
-
 const add = (a,b) => a + b;
 const subtract = (a,b) => a - b;
 const multiply = (a, b) => a * b;
@@ -141,16 +142,20 @@ function handleKeyPress(event){
     }
   
     if (key === ".") {
-      handleDecimalPoint();
+      addDecimal();
     }
 }
 
 
 function handleBackspace(){
     if (getDisplay().length > 1)
-        setDisplay((display.textContent).slice(0,-1));
+        setDisplay((getDisplay()).slice(0,-1));
     else
         setDisplay(0);
+}
+
+function reverseSign(){
+    setDisplay(Number(getDisplay()) * -1);
 }
 
 function resetCalculator() {
@@ -168,7 +173,7 @@ function concatDisplay(char){
     display.textContent += char;
 }
 
-function addDot(){
+function addDecimal(){
     if (getDisplay().includes("."))
         return;
     concatDisplay(".");
