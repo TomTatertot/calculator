@@ -15,6 +15,7 @@ const history = document.querySelector(".history");
 const dotButton = document.querySelector("#dot");
 const digitButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
+const allButtons = document.querySelectorAll("button");
 
 clearButton.addEventListener("click", resetCalculator);
 backButton.addEventListener("click", handleBackspace);
@@ -22,13 +23,14 @@ signButton.addEventListener("click", reverseSign);
 dotButton.addEventListener("click", addDecimal);
 digitButtons.forEach(button => button.addEventListener("click", processDigitInput));
 operatorButtons.forEach(button => button.addEventListener("click", processOperatorInput));
+allButtons.forEach(button => button.addEventListener("click",handleButtonClick));
 document.addEventListener("keydown", handleKeyPress);
+
+
 const add = (a,b) => a + b;
 const subtract = (a,b) => a - b;
 const multiply = (a, b) => a * b;
-const divide = (a, b) => {
-    return a / b;
-}
+const divide = (a, b) => a / b;
 
 function operate(a, b, operator) {
     if (!a)
@@ -45,7 +47,7 @@ function operate(a, b, operator) {
             return add(a,b);
         case "-": 
             return subtract(a,b);
-        case "*": 
+        case "x": 
             return multiply(a,b);
         case "/":
             if (b == 0)
@@ -67,31 +69,11 @@ function processDigitInput(event){
         resetCalculator();
 
     let input = event.target.textContent;
-
-
     if (getDisplay() == 0 && !getDisplay().includes("."))
     {
-        // if (firstOperand)
-        // {
-
-        // }
         setDisplay(input);
         return;
     }    
-    // if (getDisplay() == 0 && input == 0 && !getDisplay().includes("."))
-    //     return; 
-
-    // if (getDisplay() == 0 && input != 0 && !firstOperator && !getDisplay().includes)
-    // {
-    //     setDisplay(input);
-    //     return;
-    // }
-
-    // if (firstOperator && !secondOperand)
-    // {
-    //     setDisplay(input);
-    //     return;
-    // }
     concatDisplay(input);
 }
 
@@ -127,7 +109,7 @@ function processOperatorInput(event){
     {
         setHistory(`${getHistory()} ${secondOperand} = `)
         setDisplay(result);
-        firstOperand = getDisplay();
+        firstOperand = result;
         firstOperator = null;
         secondOperand = null;
     }
@@ -137,9 +119,21 @@ function processOperatorInput(event){
         firstOperator = operatorInput;
     } 
 }
+ 
+function handleButtonClick(event){
+    const button = event.target;
+
+    playClickSound();
+    playClickAnimation(event);
+}
 
 function handleKeyPress(event){
     const key = event.key;
+
+    if (["0","1","2","3","4","5","6","7","8","9",".","+","-","=","x","/", "c","Enter","Backspace"].includes(event.key)) {
+        playClickSound();
+        playClickAnimation(event);
+    }
 
     if (!isNaN(key)) {
       processDigitInput({ target: { textContent: key } });
@@ -158,7 +152,7 @@ function handleKeyPress(event){
     }
   
     if (key.toLowerCase() === "c") {
-      handleClear();
+      resetCalculator();
     }
   
     if (key === ".") {
@@ -196,8 +190,17 @@ function concatDisplay(char){
 
 function addDecimal(){
     if (getDisplay().includes("."))
-        return;
+        return;null
     concatDisplay(".");
+}
+
+function playClickSound(){
+
+}
+
+function playClickAnimation(event){
+    event.target.classList.add("active");
+    setTimeout(() => event.target.classList.remove("active"), 100);
 }
 
 function setDisplay(value) {
