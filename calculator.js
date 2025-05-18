@@ -1,5 +1,4 @@
-const DISPLAY_MAX_SIZE = 13;
-const HISTORY_MAX_SIZE = 15;
+const DISPLAY_MAX_SIZE = 15;
 
 let firstOperand = null;
 let secondOperand = null;
@@ -74,13 +73,13 @@ function processDigitInput(event){
         setDisplay(input);
         return;
     }    
-    concatDisplay(input);
+    appendToDisplay(input);
 }
 
 function processOperatorInput(event){
 
-    if (hasError)
-        resetCalculator();
+if (hasError)
+    resetCalculator();
     
     let operatorInput = event.target.textContent;
     if (operatorInput === "=" && firstOperator === null)
@@ -122,17 +121,15 @@ function processOperatorInput(event){
  
 function handleButtonClick(event){
     const button = event.target;
-
-    playClickSound();
-    playClickAnimation(event);
+    playClickAnimation(button);
 }
 
 function handleKeyPress(event){
     const key = event.key;
+    const button = getButtonFromKey(normalizeKey(key));
 
-    if (["0","1","2","3","4","5","6","7","8","9",".","+","-","=","x","/", "c","Enter","Backspace"].includes(event.key)) {
-        playClickSound();
-        playClickAnimation(event);
+    if (button) {
+        playClickAnimation(button);
     }
 
     if (!isNaN(key)) {
@@ -182,7 +179,7 @@ function resetCalculator() {
     errorMessage = "";
 }
 
-function concatDisplay(char){
+function appendToDisplay(char){
     if (getDisplay().length >= DISPLAY_MAX_SIZE)
         return;
     display.textContent += char;
@@ -191,16 +188,16 @@ function concatDisplay(char){
 function addDecimal(){
     if (getDisplay().includes("."))
         return;null
-    concatDisplay(".");
+    appendToDisplay(".");
 }
 
-function playClickSound(){
-
+function playClickAnimation(button){
+    button.classList.add("active");
+    setTimeout(() => button.classList.remove("active"), 100);
 }
 
-function playClickAnimation(event){
-    event.target.classList.add("active");
-    setTimeout(() => event.target.classList.remove("active"), 100);
+function getButtonFromKey(key) {
+    return document.querySelector(`button[data-key="${key}"]`);
 }
 
 function setDisplay(value) {
@@ -219,13 +216,17 @@ function getDisplay(){
 
 function setHistory(value){
     let valueStr = String(value);
-    if (hasError)
-    {
-        history.textContent = valueStr;
-        return;
-    }
-    history.textContent = valueStr.slice(0,HISTORY_MAX_SIZE);
+
+    history.textContent = valueStr;
 }
 function getHistory(){
     return history.textContent;
+}
+
+function normalizeKey(key) {
+    if (key === "Enter") return "=";
+    if (key === "*") return "x";
+    if (key === "c" || key === "C") return "C";
+    if (key === "Backspace") return "←";
+    return key;
 }

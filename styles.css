@@ -69,22 +69,38 @@ button {
 button.active {
     transform: translateY(4px);
     box-shadow: 0 1px #aaa;
-  }
+}
+
 
 .operator {
-    background-color: hsl(37, 100%, 72%);
-    box-shadow: 0 5px hsl(37, 98%, 30%);
+    background-color: hsl(40, 100%, 80%);
+    box-shadow: 0 5px hsl(40, 100%, 30%);
 
 }
 
-.number, .dot {
-    background-color: #ffffff
+.operator:hover {
+    background-color: hsl(40, 100%, 70%);
 }
+
+.number,
+.dot {
+    background-color: hsl(0, 0%, 100%)
+} 
+
+.number:hover,
+.dot:hover {
+    background-color: hsl(0, 0%, 80%)
+} 
 
 .function {
-    background-color: hsl(214, 93%, 84%);
-    box-shadow: 0 5px hsl(214, 93%, 70%);
+    background-color: hsl(200, 100%, 80%);
+    box-shadow: 0 5px hsl(200, 100%, 70%);
 }
+
+.function:hover{
+    background-color: hsl(200, 100%, 70%);
+}
+
 #zero {
     width: 13.7rem;
 }
